@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "react-dev": "webpack -d --watch",
-    "server": "node server/index.js",
+    "server": "nodemon server/index.js",
     "seed": " node server/db/seed.js",
     "start": "npm run seed && npm run server"
   },
