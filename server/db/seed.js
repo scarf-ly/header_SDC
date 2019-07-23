@@ -27,7 +27,7 @@ const createData = () => {
     });
     average = Math.round((average / reviews.length) * 2) / 2;
     Business.create({
-      id: `:${i}`,
+      id: i,
       name: makeRestaurantName(),
       avg_stars: average,
       price: faker.random.number({ min: 1, max: 4 }),
