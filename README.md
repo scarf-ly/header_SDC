@@ -1,5 +1,5 @@
-# header
-Web page header for scarf.ly.
+# scarf.ly
+Web page header for a restaurant reviews service, scarf.ly.
 
 ## Usage
 
