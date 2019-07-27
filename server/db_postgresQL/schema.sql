@@ -14,19 +14,19 @@ CREATE TABLE businessSchema.restaurants (
 );
 
 CREATE TABLE businessSchema.reviews (
-  reviews_id INTEGER NOT NULL PRIMARY KEY, 
-  restaurant_id INTEGER REFERENCES businessSchema.restaurants(restaurant_id),
+  reviews_id SERIAL PRIMARY KEY, 
+  restaurant_id INTEGER,
   dateStamp DATE, 
   star DECIMAL
 );
 
 CREATE TABLE businessSchema.categories (
-  categories_id INTEGER NOT NULL PRIMARY KEY, 
+  categories_id INTEGER PRIMARY KEY, 
   category VARCHAR(100)
 );
 
 CREATE TABLE businessSchema.categories_restaurants (
-  categories_restaurants_id INTEGER NOT NULL PRIMARY KEY, 
-  restaurant_id INTEGER REFERENCES businessSchema.restaurants(restaurant_id) ON UPDATE CASCADE,
-  categories_id INTEGER REFERENCES businessSchema.categories(categories_id) ON UPDATE CASCADE ON DELETE CASCADE
+  categories_restaurants_id SERIAL PRIMARY KEY, 
+  restaurant_id INTEGER,
+  categories_id INTEGER
 );
