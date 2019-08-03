@@ -7,9 +7,11 @@
     "test": "jest",
     "react-dev": "webpack -d --watch",
     "server": "nodemon server/index.js",
+    "server_postgres": "nodemon server/postgres_index.js",
     "seed": " node server/db/seed.js",
     "start": "npm run seed && npm run server",
-    "seed_restaurants": "node server/db_postgresQL/restaurant_seed.js"
+    "seed_cassandra": "node server/db_cassandra/restaurant_seed.js",
+    "seed_postgres": "node server/db_postgresQL/restaurant_seed.js"
   },
   "repository": {
     "type": "git",
@@ -42,6 +44,7 @@
     "array-csv": "^1.1.0",
     "axios": "^0.19.0",
     "babel-preset-react-app": "^9.0.0",
+    "body-parser": "^1.19.0",
     "brotli-gzip-webpack-plugin": "^0.5.0",
     "brotli-webpack-plugin": "^1.1.0",
     "csv-write-stream": "^2.0.0",
@@ -51,11 +54,14 @@
     "jest": "^24.8.0",
     "mongodb": "^3.2.7",
     "mongoose": "^5.6.3",
+    "newrelic": "^5.11.0",
     "pg": "^7.11.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-modal": "^3.8.2",
     "react-test-renderer": "^16.8.6",
+    "redis": "^2.8.0",
+    "response-time": "^2.3.2",
     "styled-components": "^4.3.2"
   }
 }

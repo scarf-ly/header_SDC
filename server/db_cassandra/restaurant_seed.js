@@ -2,10 +2,13 @@ const faker = require('faker');
 const fs = require('fs');
 const path = require('path');
 
+let reviewsCounter = 0;
+const cassandraCateg = [];
+
 const writerRestaurants = fs.createWriteStream(path.join(__dirname, './csv/restaurants.csv'));
 const writerReviews = fs.createWriteStream(path.join(__dirname, './csv/reviews.csv'));
-const writerCategories = fs.createWriteStream(path.join(__dirname, './csv/categories.csv'));
-const writerJoin = fs.createWriteStream(path.join(__dirname, './csv/join.csv'));
+const writerJoinCategory = fs.createWriteStream(path.join(__dirname, './csv/joinCategory.csv'));
+const writerJoinRestaurant = fs.createWriteStream(path.join(__dirname, './csv/joinRestaurant.csv'));
 
 const makeRestaurantName = () => {
   const foodTypes = ['Pizza', 'Steak', 'Brunch', 'Seafood', 'Italian', 'Chinese', 'Japanese', 'Korean', 'Seafood', 'Fish', 'Pho', 'Noodle', 'Ramen'];
@@ -23,11 +26,28 @@ const CreateData = (i) => {
   for (let j = 0; j < year.length; j += 1) { // Generates a random review from each month for the past 5 years
     for (let k = 0; k < month.length; k += 1) {
       reviews.push({ star: faker.random.number({ min: 1, max: 5 }), date: month[k].concat('-', faker.random.number({ min: 1, max: 28 }).toString().concat('-', year[j])) });
-      const date = month[k].concat('-', faker.random.number({ min: 1, max: 28 }).toString().concat('-', year[j]));
+      const date = year[j].concat('-', month[k].concat('-', faker.random.number({ min: 1, max: 28 }).toString()));
       const star = faker.random.number({ min: 1, max: 5 });
-      const dataReview = `${i},${date},${star}\n`;
+      reviewsCounter += 1;
+      const dataReview = `${reviewsCounter},${i},${date},${star}\n`;
       writerReviews.write(dataReview, 'utf8');
     }
+  }
+  const restaurantName = makeRestaurantName();
+
+  const joinArray = [];
+
+  // put 5 random numbers between 1 and 100 into joinArray
+  while (joinArray.length < 5) {
+    const r = Math.floor(Math.random() * 100) + 1;
+    if (joinArray.indexOf(r) === -1) joinArray.push(r);
+  }
+
+  for (let m = 0; m < 5; m += 1) {
+    const dataJoinCategory = `${i},${joinArray[m]},${cassandraCateg[joinArray[m]]}\n`;
+    writerJoinCategory.write(dataJoinCategory, 'utf8');
+    const dataJoinRestaurant = `${joinArray[m]},${i},${restaurantName}\n`;
+    writerJoinRestaurant.write(dataJoinRestaurant, 'utf8');
   }
 
   let average = 0;
@@ -38,7 +58,6 @@ const CreateData = (i) => {
   const bool = boolOptions[Math.floor(Math.random() * 2)];
 
   average = Math.round((average / reviews.length) * 2) / 2;
-  const restaurantName = makeRestaurantName();
   const price = faker.random.number({ min: 1, max: 4 });
   const totReviews = faker.random.number({ min: 20, max: 10000 });
   const dataRestaurant = `${i},${restaurantName},${bool},${price},${totReviews},${average}\n`;
@@ -50,26 +69,10 @@ const CreateData = (i) => {
 const CreateCategories = () => {
   for (let i = 1; i <= 100; i += 1) { // create 100 fake words to choose from
     const categ = faker.lorem.word();
-    const categories = `${i},${categ}\n`;
-    writerCategories.write(categories, 'utf8');
+    cassandraCateg.push(categ);
   }
 };
-
-// create 2 random numbers for the join table
-const CreateJoin = (i) => {
-  const joinArray = [];
-
-  // put 3 random numbers between 1 and 100 into joinArray
-  while (joinArray.length < 5) {
-    const r = Math.floor(Math.random() * 100) + 1;
-    if (joinArray.indexOf(r) === -1) joinArray.push(r);
-  }
-
-  for (let m = 0; m < 5; m += 1) {
-    const dataJoin = `${i},${joinArray[m]}\n`;
-    writerJoin.write(dataJoin, 'utf8');
-  }
-};
+CreateCategories();
 
 function writeAllData() {
   let i = 10000001;
@@ -83,7 +86,6 @@ function writeAllData() {
       if (i === 1) {
         // Last time!
         console.timeEnd('time');
-        CreateJoin(i);
         CreateData(i);
       } else {
         // See if we should continue, or wait.
@@ -91,7 +93,6 @@ function writeAllData() {
         if (i % 500000 === 0) {
           console.log('still working...');
         }
-        CreateJoin(i);
         ok = CreateData(i);
       }
     } while (i > 1 && ok);

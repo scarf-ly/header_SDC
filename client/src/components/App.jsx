@@ -1,8 +1,8 @@
 import React from 'react';
-import HeaderLeft from './HeaderLeft.jsx';
-import HeaderRight from './HeaderRight.jsx';
 import axios from 'axios';
 import styled from 'styled-components';
+import HeaderLeft from './HeaderLeft.jsx';
+import HeaderRight from './HeaderRight.jsx';
 
 const shareStyle = {
   content: {
@@ -97,26 +97,48 @@ class App extends React.Component {
     this.closeDetailsModal = this.closeDetailsModal.bind(this);
     this.closeShareModal = this.closeShareModal.bind(this);
     this.closeSaveModal = this.closeSaveModal.bind(this);
+    this.addReview = this.addReview.bind(this);
   }
 
   componentDidMount() {
     console.log('axios request to server');
-    let urlStrings = location.href.split('/');
-    let num = urlStrings [urlStrings.length - 2]; 
-    axios.get(`/header/${num}`)
-      .then(res => {
-        console.log('this is the data',res.data)
+    const urlStrings = location.href.split('/');
+    const num = urlStrings[urlStrings.length - 2];
+    axios.get(`/${num}/header`)
+      .then((res) => {
+        console.log('this is the data', res.data);
+        console.log('this is the categories', res.data.reviews);
         const state = Object.assign({}, this.state);
-        state.currentView = res.data[0];
+        // state.currentView = res.data[0];
+        state.currentView.avg_stars = res.data.header[0].avg_stars;
+        state.currentView.name = res.data.header[0].restaurant_name;
+        const categText = res.data.categories.map((result) => {
+          return result.category;
+        });
+        state.currentView.categories = categText.join(' ');
+        state.currentView.reviews = res.data.reviews;
         this.setState(state);
       })
-      .catch(err => {
-       console.log(err)
+      .catch((err) => {
+        console.log(err);
       });
   }
 
+  addReview() {
+    axios.post(`${num}/header/${reviewID}`, {
+      date: 'Fred',
+      star: 'Flintstone'
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   openDetailsModal() {
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden';
     const state = Object.assign({}, this.state);
     state.detailsModalIsOpen = true;
     state.modalStyle = detailsStyle;
@@ -124,7 +146,7 @@ class App extends React.Component {
   }
 
   openShareModal() {
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden';
     const state = Object.assign({}, this.state);
     state.shareModalIsOpen = true;
     state.modalStyle = shareStyle;
@@ -132,7 +154,7 @@ class App extends React.Component {
   }
 
   openSaveModal() {
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden';
     const state = Object.assign({}, this.state);
     state.saveModalIsOpen = true;
     state.modalStyle = saveStyle;
@@ -140,21 +162,21 @@ class App extends React.Component {
   }
 
   closeDetailsModal() {
-    document.body.style.overflow = 'auto'
+    document.body.style.overflow = 'auto';
     const state = Object.assign({}, this.state);
     state.detailsModalIsOpen = false;
     this.setState(state);
   }
 
   closeShareModal() {
-    document.body.style.overflow = 'auto'
+    document.body.style.overflow = 'auto';
     const state = Object.assign({}, this.state);
     state.shareModalIsOpen = false;
     this.setState(state);
   }
 
   closeSaveModal() {
-    document.body.style.overflow = 'auto'
+    document.body.style.overflow = 'auto';
     const state = Object.assign({}, this.state);
     state.saveModalIsOpen = false;
     this.setState(state);

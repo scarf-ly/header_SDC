@@ -2,3 +2,4 @@ node_modules
 client/dist/bundle.js
 coverage
 server/db_postgresQL/csv
+server/db_cassandra/csv
