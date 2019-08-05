@@ -3,3 +3,7 @@ client/dist/bundle.js
 coverage
 server/db_postgresQL/csv
 server/db_cassandra/csv
+munch_header.pem
+Dockerfile
+Dockerfile_old
+config

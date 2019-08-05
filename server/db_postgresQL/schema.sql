@@ -26,7 +26,7 @@ CREATE TABLE reviews (
 );
 
 CREATE TABLE categories (
-  categories_id INTEGER PRIMARY KEY, 
+  categories_id SERIAL PRIMARY KEY, 
   category VARCHAR(100)
 );
 
@@ -60,7 +60,9 @@ CREATE TABLE categories_restaurants (
 -- Query 8
 -- DELETE FROM categories_restaurants WHERE restaurant_id = 1 AND categories_id = (SELECT categories_id FROM categories WHERE category='exercitationem');
 
-COPY restaurants(restaurant_id, restaurant_name, claimed, price, total_reviews, avg_stars) FROM '/Users/janicelam/Hackreactor/scarfly/header/server/db_postgresQL/csv/restaurants.csv' DELIMITER ',' CSV;
-COPY categories(categories_id, category) FROM '/Users/janicelam/Hackreactor/scarfly/header/server/db_postgresQL/csv/categories.csv' DELIMITER ',' CSV;
-COPY categories_restaurants(restaurant_id, categories_id) FROM '/Users/janicelam/Hackreactor/scarfly/header/server/db_postgresQL/csv/join.csv' DELIMITER ',' CSV;
-COPY reviews(restaurant_id, dateStamp, star) FROM '/Users/janicelam/Hackreactor/scarfly/header/server/db_postgresQL/csv/reviews.csv' DELIMITER ',' CSV;
+-- COPY restaurants(restaurant_id, restaurant_name, claimed, price, total_reviews, avg_stars) FROM '/Users/janicelam/Hackreactor/scarfly/header/server/db_postgresQL/csv/restaurants.csv' DELIMITER ',' CSV;
+-- COPY categories(categories_id, category) FROM '/Users/janicelam/Hackreactor/scarfly/header/server/db_postgresQL/csv/categories.csv' DELIMITER ',' CSV;
+-- COPY categories_restaurants(restaurant_id, categories_id) FROM '/Users/janicelam/Hackreactor/scarfly/header/server/db_postgresQL/csv/join.csv' DELIMITER ',' CSV;
+-- COPY reviews(restaurant_id, dateStamp, star) FROM '/Users/janicelam/Hackreactor/scarfly/header/server/db_postgresQL/csv/reviews.csv' DELIMITER ',' CSV;
+
+-- docker exec -it postgres_docker psql -U postgres

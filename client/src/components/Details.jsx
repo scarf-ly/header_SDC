@@ -236,10 +236,10 @@ class Details extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    const state = Object.assign({}, this.state)
+    const state = Object.assign({}, this.state);
     if (this.props.reviewCount !== newProps.reviewCount) {
-      state.props = newProps
-      this.setState(state, () => {this.setLineGraph(); this.countStars()});
+      state.props = newProps;
+      this.setState(state, () => { this.setLineGraph(); this.countStars(); });
     }
   }
 
@@ -247,9 +247,10 @@ class Details extends React.Component {
     const stars = ['one', 'two', 'three', 'four', 'five'];
     const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
-    const reviews = this.props.reviews;
-    console.log('look at these reviews', this.props.reviews)
+    const { reviews } = this.props;
+    // console.log('look at these reviews', this.props.reviews)
     for (let i = 0; i < reviews.length; i++) {
+      // console.log(i)
       let star = reviews[i].star - 1;
       star = stars[star];
       let month = parseFloat(reviews[i].datestamp.split('-')[1]) - 1;
@@ -271,26 +272,28 @@ class Details extends React.Component {
       }
     }
   }
-  
+
   countStars() {
-    this.props.reviews.forEach(val => {
-      if (val.star === 1) {
+    console.log('look at these rev', this.props.reviews);
+    this.props.reviews.forEach((val) => {
+      console.log(val);
+      if (val.star == 1) {
         this.oneStar++;
-      } else if (val.star === 2) {
+      } else if (val.star == 2) {
         this.twoStar++;
-      } else if (val.star === 3) {
+      } else if (val.star == 3) {
         this.threeStar++;
-      } else if (val.star === 4) {
+      } else if (val.star == 4) {
         this.fourStar++;
-      } else if (val.star === 5) {
+      } else if (val.star == 5) {
         this.fiveStar++;
       }
-    })
+    });
   }
 
   toggleState(e) {
     const classname = e.target.className;
-    const state = Object.assign({}, this.state)
+    const state = Object.assign({}, this.state);
     if (classname === 'current-year') {
       state.currentYearToggled = !state.currentYearToggled;
     } else if (classname === 'last-year') {
@@ -308,7 +311,7 @@ class Details extends React.Component {
   handleClick(e) {
     const classname = e.target.className.split(' ')[0];
     const state = Object.assign({}, this.state);
-    for (let key in state) {
+    for (const key in state) {
       state[key] = false;
     }
     if (classname === 'current-year') {
@@ -317,25 +320,25 @@ class Details extends React.Component {
         this.lineCoordinates = this.currentYear;
       }
     }
-    if (classname === 'last-year')  {
+    if (classname === 'last-year') {
       state.lastYearClicked = !state.lastYearClicked;
       if (state.lastYearClicked) {
         this.lineCoordinates = this.lastYear;
       }
     }
-    if (classname === 'two-years-ago')  {
+    if (classname === 'two-years-ago') {
       state.twoYearsAgoClicked = !state.twoYearsAgoClicked;
       if (state.twoYearsAgoClicked) {
         this.lineCoordinates = this.twoYearsAgo;
       }
     }
-    if (classname === 'three-years-ago')  {
+    if (classname === 'three-years-ago') {
       state.threeYearsAgoClicked = !state.threeYearsAgoClicked;
       if (state.threeYearsAgoClicked) {
         this.lineCoordinates = this.threeYearsAgo;
       }
     }
-    if (classname === 'four-years-ago')  {
+    if (classname === 'four-years-ago') {
       state.fourYearsAgoClicked = !state.fourYearsAgoClicked;
       if (state.fourYearsAgoClicked) {
         this.lineCoordinates = this.fourYearsAgo;
@@ -345,7 +348,7 @@ class Details extends React.Component {
   }
 
   barWidth(number) {
-    var result = number
+    let result = number;
     if (result > 38) {
       result = 38;
     }
@@ -353,14 +356,17 @@ class Details extends React.Component {
     return result;
   }
 
-  render () {
+  render() {
     return (
       <DetailDiv>
         <Button
           className="details"
           onClick={this.props.openDetailsModal}
-        ><i className="far fa-chart-bar"></i> Details
-        </Button>
+        >
+<i className="far fa-chart-bar"></i>
+{' '}
+Details
+</Button>
         <Modal
           isOpen={this.props.detailsModalStatus}
           onRequestClose={this.props.closeDetailsModal}
@@ -368,9 +374,9 @@ class Details extends React.Component {
         >
           <DetailModalHeader>
             <DetailsHeaderTitle>Rating Details</DetailsHeaderTitle>
-            <XButton onClick={this.props.closeDetailsModal} className="fas fa-times"></XButton>
+            <XButton onClick={this.props.closeDetailsModal} className="fas fa-times" />
           </DetailModalHeader>
-          <hr/>
+          <hr />
           <div className="modal-body">
             <div className="graph">
               <div className="month-trend" style={monthlyTrendStyle}>
@@ -383,15 +389,15 @@ class Details extends React.Component {
                   <YearsTitle onClick={this.handleClick} onMouseOver={this.toggleState} onMouseOut={this.toggleState} id={this.state.fourYearsAgoToggled.toString()} className="four-years-ago" style={this.state.fourYearsAgoClicked ? yearSelected : yearStyle}>2015</YearsTitle>
                 </div>
               </div>
-              <hr/>
+              <hr />
               <div>
                 <div>
                   <svg className="graph" height="195" width="490">
                     <g className="grid x-grid">
-                      <line x1="90" x2="90" y1="5" y2="370"></line>
+                      <line x1="90" x2="90" y1="5" y2="370" />
                     </g>
                     <g className="grid y-grid">
-                      <line x1="90" x2="705" y1="370" y2="370"></line>
+                      <line x1="90" x2="705" y1="370" y2="370" />
                     </g>
                     <g className="labels x-labels">
                       <GraphAxisTitle x="10" y="180">Jan</GraphAxisTitle>
@@ -418,69 +424,84 @@ class Details extends React.Component {
                     <g className="data" data-setname="average-monthly-star">
                       {
                         this.lineCoordinates.map((value, index) => (
-                          <circle stroke="#C53926" fill="white" strokeWidth="2" cx={value.split(',')[0]} cy={value.split(',')[1]} r="5" key={index}></circle>
+                          <circle stroke="#C53926" fill="white" strokeWidth="2" cx={value.split(',')[0]} cy={value.split(',')[1]} r="5" key={index} />
                         ))
                       }
                     </g>
-                    <polyline points={this.lineCoordinates.join()} fill="#F5D9D6" fillOpacity="0" stroke="#C53926" strokeWidth="2"/>
-                    <polyline points="20,160 460,160" fill="none" stroke="#ddd"/>
-                    <polyline points="20,130 460,130" fill="none" stroke="#ddd"/>
-                    <polyline points="20,100 460,100" fill="none" stroke="#ddd"/>
-                    <polyline points="20,70 460,70" fill="none" stroke="#ddd"/>
-                    <polyline points="20,40 460,40" fill="none" stroke="#ddd"/>
-                    <polyline points="20,10 460,10" fill="none" stroke="#ddd"/>
-                    <polyline points="20,160 20,10" fill="none" stroke="#ddd"/>
-                    <polyline points="60,160 60,10" fill="none" stroke="#ddd"/>
-                    <polyline points="100,160 100,10" fill="none" stroke="#ddd"/>
-                    <polyline points="140,160 140,10" fill="none" stroke="#ddd"/>
-                    <polyline points="180,160 180,10" fill="none" stroke="#ddd"/>
-                    <polyline points="220,160 220,10" fill="none" stroke="#ddd"/>
-                    <polyline points="260,160 260,10" fill="none" stroke="#ddd"/>
-                    <polyline points="300,160 300,10" fill="none" stroke="#ddd"/>
-                    <polyline points="340,160 340,10" fill="none" stroke="#ddd"/>
-                    <polyline points="380,160 380,10" fill="none" stroke="#ddd"/>
-                    <polyline points="420,160 420,10" fill="none" stroke="#ddd"/>
-                    <polyline points="460,160 460,10" fill="none" stroke="#ddd"/>
-                    <polygon points={`20,160 `.concat(',', this.lineCoordinates.join()).concat(`,`, ` 460,160`)} fill="#f5d9d6" fillOpacity="0.6"></polygon>
+                    <polyline points={this.lineCoordinates.join()} fill="#F5D9D6" fillOpacity="0" stroke="#C53926" strokeWidth="2" />
+                    <polyline points="20,160 460,160" fill="none" stroke="#ddd" />
+                    <polyline points="20,130 460,130" fill="none" stroke="#ddd" />
+                    <polyline points="20,100 460,100" fill="none" stroke="#ddd" />
+                    <polyline points="20,70 460,70" fill="none" stroke="#ddd" />
+                    <polyline points="20,40 460,40" fill="none" stroke="#ddd" />
+                    <polyline points="20,10 460,10" fill="none" stroke="#ddd" />
+                    <polyline points="20,160 20,10" fill="none" stroke="#ddd" />
+                    <polyline points="60,160 60,10" fill="none" stroke="#ddd" />
+                    <polyline points="100,160 100,10" fill="none" stroke="#ddd" />
+                    <polyline points="140,160 140,10" fill="none" stroke="#ddd" />
+                    <polyline points="180,160 180,10" fill="none" stroke="#ddd" />
+                    <polyline points="220,160 220,10" fill="none" stroke="#ddd" />
+                    <polyline points="260,160 260,10" fill="none" stroke="#ddd" />
+                    <polyline points="300,160 300,10" fill="none" stroke="#ddd" />
+                    <polyline points="340,160 340,10" fill="none" stroke="#ddd" />
+                    <polyline points="380,160 380,10" fill="none" stroke="#ddd" />
+                    <polyline points="420,160 420,10" fill="none" stroke="#ddd" />
+                    <polyline points="460,160 460,10" fill="none" stroke="#ddd" />
+                    <polygon points={'20,160 '.concat(',', this.lineCoordinates.join()).concat(',', ' 460,160')} fill="#f5d9d6" fillOpacity="0.6" />
                   </svg>
                 </div>
               </div>
-              <DetailsMonthlyChanges>Understand how a business' rating changes month-to-month. <Link>Learn More</Link> </DetailsMonthlyChanges>
+              <DetailsMonthlyChanges>
+Understand how a business' rating changes month-to-month.
+{' '}
+<Link>Learn More</Link>
+{' '}
+ </DetailsMonthlyChanges>
             </div>
             <OverallRatingTitle>Overall Rating</OverallRatingTitle>
-            <hr/>
-            <DetailsReviewCount>Munching since 2015 with {this.props.reviewCount} reviews</DetailsReviewCount>
+            <hr />
+            <DetailsReviewCount>
+Munching since 2015 with
+{' '}
+{this.props.reviewCount}
+{' '}
+reviews
+</DetailsReviewCount>
             <div>
               <svg className="chart" width="470" height="170" role="img">
                 <title className="title">star bar chart</title>
                 <g className="bar-star-5">
-                  <FiveStarBar width={this.barWidth(this.fiveStar)} height="30"></FiveStarBar>
+                  <FiveStarBar width={this.barWidth(this.fiveStar)} height="30" />
                   <StarBarFont x="10" y="15" dy=".35em">5 stars</StarBarFont>
                   <StarBarFont x={this.barWidth(this.fiveStar) + 5} y="15" dy=".35em">{this.fiveStar}</StarBarFont>
                 </g>
                 <g className="bar-star-4">
-                  <FourStarBar width={this.barWidth(this.fourStar)} height="30" y="33"></FourStarBar>
+                  <FourStarBar width={this.barWidth(this.fourStar)} height="30" y="33" />
                   <StarBarFont x="10" y="48" dy=".35em">4 stars</StarBarFont>
                   <StarBarFont x={this.barWidth(this.fourStar) + 5} y="48" dy=".35em">{this.fourStar}</StarBarFont>
                 </g>
                 <g className="bar-star-3">
-                  <ThreeStarBar width={this.barWidth(this.threeStar)} height="30" y="65"></ThreeStarBar>
+                  <ThreeStarBar width={this.barWidth(this.threeStar)} height="30" y="65" />
                   <StarBarFont x="10" y="80" dy=".35em">3 stars</StarBarFont>
                   <StarBarFont x={this.barWidth(this.threeStar) + 5} y="80" dy=".35em">{this.threeStar}</StarBarFont>
                 </g>
                 <g className="bar-star-2">
-                  <TwoStarBar width={this.barWidth(this.twoStar)} height="30" y="97"></TwoStarBar>
+                  <TwoStarBar width={this.barWidth(this.twoStar)} height="30" y="97" />
                   <StarBarFont x="10" y="112" dy=".35em">2 stars</StarBarFont>
                   <StarBarFont x={this.barWidth(this.twoStar) + 5} y="112" dy=".35em">{this.twoStar}</StarBarFont>
                 </g>
                 <g className="bar-star-1">
-                  <OneStarBar width={this.barWidth(this.oneStar)} height="30" y="130"></OneStarBar>
+                  <OneStarBar width={this.barWidth(this.oneStar)} height="30" y="130" />
                   <StarBarFont x="10" y="145" dy=".35em">1 star</StarBarFont>
                   <StarBarFont x={this.barWidth(this.oneStar) + 5} y="145" dy=".35em">{this.oneStar}</StarBarFont>
                 </g>
               </svg>
             </div>
-            <DetailsFooter>We calculate the overall star rating using only reviews that our automated software currently recommends. <Link>Learn More</Link></DetailsFooter>
+            <DetailsFooter>
+We calculate the overall star rating using only reviews that our automated software currently recommends.
+{' '}
+<Link>Learn More</Link>
+</DetailsFooter>
           </div>
         </Modal>
       </DetailDiv>

@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "react-dev": "webpack -d --watch",
+    "react-dev": "webpack",
     "server": "nodemon server/index.js",
-    "server_postgres": "nodemon server/postgres_index.js",
+    "server_postgres": "node server/postgres_index.js",
     "seed": " node server/db/seed.js",
     "start": "npm run seed && npm run server",
     "seed_cassandra": "node server/db_cassandra/restaurant_seed.js",
