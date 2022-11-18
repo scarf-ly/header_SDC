@@ -38,7 +38,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.2",
     "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "array-csv": "^1.1.0",
